@@ -29,22 +29,48 @@ A robust, production-ready RESTful API for managing tasks in a To-Do List applic
     cd toDoList
     ```
 
-2.  **Configure Database (Optional):**
-    The application comes pre-configured with an H2 in-memory database. Configuration details can be verified in `src/main/resources/application.properties`.
+2.  **Choose Your Execution Method**
+    You can run this API using Docker (Recommended) or through a Traditional Local Setup.
 
-3.  **Run the application:**
-    Open the project in your favorite IDE (IntelliJ IDEA, VS Code, or Eclipse) and run the `ToDoListApplication.java` class, or use the terminal:
-    ```bash
-    mvn spring-boot:run
-    ```
-    The server will start on `http://localhost:8080`.
+    - **Option A: Running with Docker (Zero Configuration)**
+        This method isolates the application inside a container. You don't need Java or Maven installed on your machine—only Docker Desktop running.
+        1. **Build the Docker Image**
+           Compile the application and pack it into a lightweight container image:
+           ```bash
+           docker build -t todolist-api .
+           ```
+        2. **Run the Container**
+           Start the containerized application in the background, mapping it to port 8080:
+           ```bash
+           docker run -d -p 8080:8080 --name mi-contenedor-todolist todolist-api
+           ```
+           The server will be live at http://localhost:8080.
+           
+    **Managing via Docker Desktop**
+    If you prefer a graphical interface, you can manage the container fully within Docker Desktop:
+    1. Open the Docker Desktop application.
+    2. Go to the Containers tab in the left sidebar.
+    3. You will see mi-contenedor-todolist listed with a Green Icon (Running).
+    Controls: You can click the Stop (Square) button to pause the API, or the Trash icon to remove it. When you restart your computer, simply click the Start         (Play) button to bring the API back online instantly without typing any commands.
 
-4.  **Access H2 Web Console:**
-    To inspect the database tables visually, navigate to:
-    * **URL:** `http://localhost:8080/h2-console`
-    * **JDBC URL:** `jdbc:h2:mem:todolist_db`
-    * **User Name:** `sa`
-    * **Password:** *(Leave empty)*
+    - **Option B: Traditional Local Setup**
+      Use this method if you wish to run or develop the application directly on your host machine.
+      1. **Run the application**
+         Make sure you have Java 17 configured. Open the terminal in the root folder and execute:
+         ```bash
+         ./mvnw spring-boot:run
+         ```
+        (On Windows PowerShell, use .\mvnw.cmd spring-boot:run). The server will start on http://localhost:8080.
+
+        **Accessing the H2 Web Console**
+        Whether running via Docker or locally, you can inspect the in-memory database tables visually in your browser:
+        - URL: http://localhost:8080/h2-console
+        - JDBC URL: jdbc:h2:mem:todolist_db
+        - User Name: sa
+        - Password: (Leave empty)
+     
+        ***Note for Docker Users***
+        Remote database web connections are safely allowed inside the container via spring.h2.console.settings.web-allow-others=true to let your host browser             seamlessly access the containerized H2 database.
 
 ---
 
